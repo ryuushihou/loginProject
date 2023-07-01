@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-mybatis.org//OTD Mapper 3.0/EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ryuushihou.backend.mapper.UserMapper">
+    <select id="getUserByUsername" resultType="com.ryuushihou.backend.entity.UserBean">
+        SELECT * FROM LOGIN_INFO;
+    </select>
+</mapper>
