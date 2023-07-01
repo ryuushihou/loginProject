@@ -1,2 +1,4 @@
 # loginProject
-the first project for Separation of frontend and backend
+the first login project for Separation of frontend and backend
+
+springboot3 ➕ vue3
