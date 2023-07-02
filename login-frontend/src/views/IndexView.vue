@@ -1,12 +1,23 @@
-<script>
+<script setup>
+  import router from "@/router";
+  import {ElMessage} from "element-plus";
+  import {get} from "@/api";
+
+  const logout = () => {
+    get('/api/auth/logout',(message) => {
+      ElMessage.success(message)
+      router.push('/')
+    })
+  }
+
 </script>
 
 <template>
 <div>
-  login succeed!!!
+  welcome here！this is a f*****king shit project
 </div>
   <div>
-    <el-button type="danger" plain>exit</el-button>
+    <el-button @click="logout" type="danger" plain>exit</el-button>
   </div>
 </template>
 

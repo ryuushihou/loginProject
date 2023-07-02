@@ -27,9 +27,11 @@ public class AuthorizeService implements UserDetailsService {
             throw new UsernameNotFoundException("用户名或密码错误!!!");
         }
 
-        return User.withUsername(userBean.getUsername())
+        UserDetails user = User.withUsername(userBean.getUsername())
                 .password(userBean.getPassword())
                 .roles("user")
                 .build();
+        System.out.println(user);
+        return user;
     }
 }

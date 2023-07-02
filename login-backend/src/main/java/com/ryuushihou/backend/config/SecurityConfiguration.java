@@ -15,6 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
 
@@ -41,13 +44,29 @@ public class SecurityConfiguration {
                 .and()
                 .logout()
                 .logoutUrl("/api/auth/logout")
+                .logoutSuccessHandler(this::onAuthenticationSuccess)
                 .and()
                 .csrf()
                 .disable()
+                .cors()
+                .configurationSource(this.corsConfigurationSource())
+                .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(this::onAuthenticationFailure)
                 .and()
                 .build();
+    }
+
+    private CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOriginPattern("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addExposedHeader("*");
+        corsConfiguration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",corsConfiguration);
+        return source;
     }
 
     public void onAuthenticationSuccess(
@@ -56,7 +75,12 @@ public class SecurityConfiguration {
             Authentication authentication) throws IOException {
         httpServletResponse.setCharacterEncoding("utf-8");
         // json
-        httpServletResponse.getWriter().write(JSONObject.toJSONString(RestBean.success("登陆成功了")));
+        if(httpServletRequest.getRequestURI().endsWith("/login")){
+            httpServletResponse.getWriter().write(JSONObject.toJSONString(RestBean.success("登陆成功了")));
+        }else if(httpServletRequest.getRequestURI().endsWith("/logout")){
+            httpServletResponse.getWriter().write(JSONObject.toJSONString(RestBean.success("退出成功！")));
+        }
+
     }
 
     public void onAuthenticationFailure(
@@ -65,7 +89,7 @@ public class SecurityConfiguration {
             AuthenticationException exception) throws IOException {
         response.setCharacterEncoding("utf-8");
         // json
-        response.getWriter().write(JSONObject.toJSONString(RestBean.failure(exception.getMessage())));
+        response.getWriter().write(JSONObject.toJSONString(RestBean.failure("登陆失败！")));
     }
 
     // 校验入力的信息
