@@ -14,16 +14,8 @@ public class RestBean {
         return new RestBean("200",true, data.toString());
     }
 
-    public static RestBean success(String message,String status){
-        return new RestBean(status,true, message);
-    }
-
-    public static RestBean failure(String status){
-        return new RestBean(status,true, null);
-    }
-
-    public static RestBean failure(String message,String status){
-        return new RestBean(status,false, message);
+    public static RestBean failure(String message){
+        return new RestBean("400",false, message);
     }
 
 }

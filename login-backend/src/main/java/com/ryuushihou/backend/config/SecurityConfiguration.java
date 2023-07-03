@@ -89,7 +89,7 @@ public class SecurityConfiguration {
             AuthenticationException exception) throws IOException {
         response.setCharacterEncoding("utf-8");
         // json
-        response.getWriter().write(JSONObject.toJSONString(RestBean.failure("登陆失败！")));
+        response.getWriter().write(JSONObject.toJSONString(RestBean.failure(exception.getMessage())));
     }
 
     // 校验入力的信息
